@@ -1,0 +1,10 @@
+ <?xml version="1.0" standalone='no'?><!--*-nxml-*-->
+ <!DOCTYPE service-group SYSTEM "avahi-service.dtd">
+ 
+ <service-group>
+    <name>GatePie</name> 
+    <service>
+        <type>_kompisys._tcp</type>
+        <port>3000</port>
+    </service>
+</service-group>

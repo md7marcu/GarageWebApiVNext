@@ -1,0 +1,15 @@
+[Unit]
+Description=Gate Web Api
+
+[Service]
+Type=simple
+WorkingDirectory=/home/pi/gatewebapi
+Environment=PATH=/usr/bin:/usr/local/bin
+Environment=NODE_ENV=production
+Environment=NODE_PORT=3000
+User=pi
+ExecStart=/usr/bin/node run start
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

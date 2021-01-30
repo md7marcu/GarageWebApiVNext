@@ -9,9 +9,9 @@ export class Gpio {
     windowsFacade: any;
     public ready: Promise<any>;
 
-    public constructor(){
+    public constructor() {
 
-        if (process.env.NODE_ENV === "windows" || process.env.NODE_ENV === "test"){ // fake when windows
+        if (process.env.NODE_ENV === "windows" || process.env.NODE_ENV === "test") { // fake when windows
             debug("Running on windows or test. Setting up fake wiringpi");
             this.ready = new Promise((promiseResolve) => {
                 this.wpi = gpio as any;
@@ -27,7 +27,7 @@ export class Gpio {
                     this.wpi.setup(config.defaultWiringPiMode);
                     promiseResolve(this.wpi);
                 });
-            })
+            });
         }
     }
 
@@ -61,7 +61,7 @@ export class Gpio {
 
     public setFallingInterrupt(pin: number, callback: (delta: number) => any)
         : void {
-        this.wpi.wiringPiISR(pin, this.wpi.INT_EDGE_FALLING, callback); 
+        this.wpi.wiringPiISR(pin, this.wpi.INT_EDGE_FALLING, callback);
     }
 
     public setRisingInterrupt(pin: number, callback: (delta: number) => any)

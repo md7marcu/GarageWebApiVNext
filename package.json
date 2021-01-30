@@ -13,7 +13,8 @@
     "start": "nodemon ./dist/server.js",
     "prod": "npm run build && npm run start",
     "postinstall": "node-config-ts",
-    "windows": "cross-env NODE_ENV=windows ts-node ./lib/server.ts"
+    "windows": "cross-env NODE_ENV=windows ts-node ./lib/server.ts",
+    "watch": "tsc -w -p ."
   },
   "author": "",
   "license": "ISC",

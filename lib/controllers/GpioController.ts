@@ -14,7 +14,6 @@ export class GpioController {
         this.gpio = gpio;
         this.start();
     }
-    
     public setupGarage(): void {
         this.gpio.setupOutputPin(config.leftPin);
         let value = this.gpio.read(config.leftPin);

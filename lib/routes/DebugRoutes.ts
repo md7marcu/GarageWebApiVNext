@@ -36,7 +36,6 @@ export class DebugRoutes {
         });
     }
 
-
     private userAuthorized = (req: IRequest) => {
         return req && req.access_token && includes((req.access_token as any).claims, config.garageClaim);
     }

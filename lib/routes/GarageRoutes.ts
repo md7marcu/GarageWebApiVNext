@@ -241,8 +241,8 @@ export class GarageRoutes {
 
         verifyOptions.issuer = config.issuer;
         verifyOptions.audience = config.audience;
-        verifyOptions.ignoreNotBefore = true;
-        verifyOptions.ignoreExpiration = true;
+        verifyOptions.ignoreNotBefore = config.ignoreTokenExpiration;
+        verifyOptions.ignoreExpiration = config.ignoreTokenCreation;
         verifyOptions.algorithms = [config.algorithm];
 
         return verifyOptions;

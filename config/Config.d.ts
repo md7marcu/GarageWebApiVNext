@@ -21,4 +21,6 @@ interface Config {
   rightClosedPin: number;
   garageClaim: string;
   pinMoveDelay: number;
+  ignoreTokenExpiration: boolean;
+  ignoreTokenCreation: boolean;
 }

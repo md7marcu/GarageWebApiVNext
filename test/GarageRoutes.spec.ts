@@ -1,17 +1,18 @@
 import "mocha";
 import * as Supertest from "supertest";
 import * as Debug from "debug";
-import * as chai from "chai";
 import { expect } from "chai";
 import { config } from "node-config-ts";
 import { App } from "../lib/app";
 import { Gpio } from "../lib/facades/gpio";
-import sinon, { stubInterface } from "ts-sinon";
+import sinon from "ts-sinon";
+import setHttpsOptions from "./helpers/certs";
+import { buildAndSignToken } from "./helpers/token";
 
-describe("Express routes", () => {
+describe("Garage Routes", () => {
     let gpio: Gpio;
     // tslint:disable-next-line:max-line-length
-    let token: string = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRob3JpemUudWx0cmFrb21waXMuY29tIiwiYXVkIjoiYXBpLnVsdHJha29tcGlzLmNvbSIsInN1YiI6InVsdHJha29tcGlzIiwiZXhwIjoxNjExNDE5NzQwLCJpYXQiOjE2MTE0MTYxMTAsInNjb3BlIjpbIm9wZW5pZCIsInNzbiJdLCJlbWFpbCI6ImFAYS5zZSIsImNsYWltcyI6WyJnYXRlIiwiZ2FyYWdlIl19.EdOQhxceEZA_R-ylB16H7QV1zCKdqzocFipzo-HWrZPQtgsE9YTvVhr9IMdy9SHIBeoNg4P0GgYh61MuxOMP-sjtam8wLW_LCnMO8RC3f_n42Lfn2AVwXNTCnCxh18ErR5kxda0j3ta-lr8-rQfYLhvLLvq2bMq1fwvvKRYSI6oegxB1M2-X1wArdujejFWQpd_j1at2F0PgMj3OyGy55V_Fy9-kAMiYDjbo9cwWN47i8Kw1HsCWk89KE3E0p3PZ9WnWstvclUdMt6aLlGvqCwPKqk2fCVUox7pbXMaWdyqerMAJ0KxYf2ltKsoCEPvpgegdud-SFtrCHcTL6tEDcg";
+    let token: string;
     const sandbox = sinon.createSandbox();
     let app: App;
 
@@ -20,7 +21,10 @@ describe("Express routes", () => {
         gpio = new Gpio();
         app = new App();
         (app as any).gpio = gpio;
-        config.pinMoveDelay = 200;
+        config.pinMoveDelay = 20;
+        setHttpsOptions(app);
+        config.serverCert = "/config/tests/testcert.pem",
+        token = buildAndSignToken("1234", "emailjuarez@email.com", config.garageClaim, undefined, (app as any).httpsOptions.key);
     });
 
     afterEach(() => {
@@ -37,7 +41,7 @@ describe("Express routes", () => {
         gpio.ready.then(async () => {
             const response = await Supertest(app.server)
                 .get("/GetGarageDoorStatuses")
-                .setHeader("access_token", "token");
+                .set("access_token", "token");
             expect(response.status).to.be.equal(401);
         });
     });
@@ -52,7 +56,7 @@ describe("Express routes", () => {
         sandbox.assert.calledTwice(spy);
         expect(response.status).to.be.equal(200);
     });
-
+    
     it("Should close the right garage door on OpenRightGarageDoor call", async () => {
         let spy = sandbox.spy(gpio, "write");
 

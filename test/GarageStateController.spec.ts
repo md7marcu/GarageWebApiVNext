@@ -4,7 +4,7 @@ import { GarageStateController } from "../lib/controllers/GarageStateController"
 import { Gpio } from "../lib/facades/gpio";
 import { GarageDoor } from "../lib/constants/GarageDoor";
 
-describe("Express routes", () => {
+describe("Garage State Routes", () => {
     let gpio: Gpio;
 
     before( async() => {
@@ -17,7 +17,7 @@ describe("Express routes", () => {
 
             let state = garage.garageDoorStatus(GarageDoor.Left);
 
-            expect(state).to.be("Moving");
+            expect(state).to.equal("Moving");
         });
     });
 
@@ -27,7 +27,7 @@ describe("Express routes", () => {
 
             let state = garage.garageDoorStatus(GarageDoor.Left);
 
-            expect(state).to.be("MovinGg");
+            expect(state).to.equal("Moving");
         });
     });
 });

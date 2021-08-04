@@ -9,9 +9,9 @@
     "test-dev": "cross-env NODE_ENV=windows nodemon -L --watch . --ext ts --exec \"mocha --timeout '60000' -r ts-node/register test/**/*.spec.ts\"",
     "config-test-dev": "cp -R lib/views dist && cp -R public dist/public && DEBUG=bajs NODE_ENV=test nodemon --watch . --ext ts --exec \"env-cmd -f ./config/.env  mocha -r ts-node/register test/**/*.spec.ts\"",
     "build": "tsc && cp ./config/cert.pem config/serverCert.pem",
-    "dev": "ts-node ./lib/server.ts",
-    "start": "nodemon ./dist/server.js",
-    "prod": "npm run build && npm run start",
+    "dev": "cross-env DEPLOYMENT=staging ts-node ./lib/server.ts",
+    "start": "cross-env DEPLOYMENT=staging nodemon ./dist/server.js",
+    "prod": "cross-env DEPLOYMENT=production npm run build && npm run start",
     "postinstall": "node-config-ts",
     "windows": "cross-env NODE_ENV=windows ts-node ./lib/server.ts",
     "watch": "tsc -w -p ."

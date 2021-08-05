@@ -43,7 +43,6 @@ describe("Garage Routes", () => {
         gpio.ready.then(async () => {
             const response = await Supertest(app.server)
                 .get("/GetGarageDoorStatuses")
-                .trustLocalhost()
                 .set("access_token", "token");
             expect(response.status).to.be.equal(401);
         });
@@ -51,97 +50,111 @@ describe("Garage Routes", () => {
 
     it("Should open the right garage door on OpenRightGarageDoor call", async () => {
         let spy = sandbox.spy(gpio, "write");
+        gpio.ready.then(async () => {
+            const response = await Supertest(app.server)
+            .post("/OpenRightGarageDoor")
+            .trustLocalhost()
+            .set("Authorization", `Bearer ${token}`);
 
-        const response = await Supertest(app.server)
-        .post("/OpenRightGarageDoor")
-        .trustLocalhost()
-        .set("Authorization", `Bearer ${token}`);
-
-        sandbox.assert.calledTwice(spy);
-        expect(response.status).to.be.equal(200);
+            sandbox.assert.calledTwice(spy);
+            expect(response.status).to.be.equal(200);
+        });
     });
     
     it("Should close the right garage door on OpenRightGarageDoor call", async () => {
         let spy = sandbox.spy(gpio, "write");
+        gpio.ready.then(async () => {
+            const response = await Supertest(app.server)
+            .post("/CloseRightGarageDoor")
+            .trustLocalhost()
+            .set("Authorization", `Bearer ${token}`);
 
-        const response = await Supertest(app.server)
-        .post("/CloseRightGarageDoor")
-        .trustLocalhost()
-        .set("Authorization", `Bearer ${token}`);
-
-        sandbox.assert.calledTwice(spy);
-        expect(response.status).to.be.equal(200);
+            sandbox.assert.calledTwice(spy);
+            expect(response.status).to.be.equal(200);
+        });
     });
 
     it("Should open the left garage door on OpenLeftGarageDoor call", async () => {
         let spy = sandbox.spy(gpio, "write");
 
-        const response = await Supertest(app.server)
-        .post("/OpenLeftGarageDoor")
-        .trustLocalhost()
-        .set("Authorization", `Bearer ${token}`);
+        gpio.ready.then(async () => {
+            const response = await Supertest(app.server)
+            .post("/OpenLeftGarageDoor")
+            .trustLocalhost()
+            .set("Authorization", `Bearer ${token}`);
 
-        sandbox.assert.calledTwice(spy);
-        expect(response.status).to.be.equal(200);
+            sandbox.assert.calledTwice(spy);
+            expect(response.status).to.be.equal(200);
+        });
     });
 
     it("Should close the left garage door on CloseLeftGarageDoor call", async () => {
         let spy = sandbox.spy(gpio, "write");
 
-        const response = await Supertest(app.server)
-        .post("/CloseLeftGarageDoor")
-        .trustLocalhost()
-        .set("Authorization", `Bearer ${token}`);
+        gpio.ready.then(async () => {
+            const response = await Supertest(app.server)
+            .post("/CloseLeftGarageDoor")
+            .trustLocalhost()
+            .set("Authorization", `Bearer ${token}`);
 
-        sandbox.assert.calledTwice(spy);
-        expect(response.status).to.be.equal(200);
+            sandbox.assert.calledTwice(spy);
+            expect(response.status).to.be.equal(200);
+        });
     });
 
     it("Should move the left garage door on SwitchLeftDoor call", async () => {
         let spy = sandbox.spy(gpio, "write");
 
-        const response = await Supertest(app.server)
-        .post("/SwitchLeftDoor")
-        .trustLocalhost()
-        .set("Authorization", `Bearer ${token}`);
+        gpio.ready.then(async () => {
+            const response = await Supertest(app.server)
+            .post("/SwitchLeftDoor")
+            .trustLocalhost()
+            .set("Authorization", `Bearer ${token}`);
 
-        sandbox.assert.calledTwice(spy);
-        expect(response.status).to.be.equal(200);
+            sandbox.assert.calledTwice(spy);
+            expect(response.status).to.be.equal(200);
+        });
     });
 
     it("Should move the right garage door on SwitchRightDoor call", async () => {
         let spy = sandbox.spy(gpio, "write");
 
-        const response = await Supertest(app.server)
-        .post("/SwitchRightDoor")
-        .trustLocalhost()
-        .set("Authorization", `Bearer ${token}`);
+        gpio.ready.then(async () => {
+            const response = await Supertest(app.server)
+            .post("/SwitchRightDoor")
+            .trustLocalhost()
+            .set("Authorization", `Bearer ${token}`);
 
-        sandbox.assert.calledTwice(spy);
-        expect(response.status).to.be.equal(200);
+            sandbox.assert.calledTwice(spy);
+            expect(response.status).to.be.equal(200);
+        });
     });
 
     it("Should open the doors on OpenDoors call", async () => {
         let spy = sandbox.spy(gpio, "write");
 
-        const response = await Supertest(app.server)
-        .post("/OpenDoors")
-        .trustLocalhost()
-        .set("Authorization", `Bearer ${token}`);
+        gpio.ready.then(async () => {
+            const response = await Supertest(app.server)
+            .post("/OpenDoors")
+            .trustLocalhost()
+            .set("Authorization", `Bearer ${token}`);
 
-        sandbox.assert.callCount(spy, 4);
-        expect(response.status).to.be.equal(200);
+            sandbox.assert.callCount(spy, 4);
+            expect(response.status).to.be.equal(200);
+        });
     });
 
     it("Should close the doors on CloseDoors call", async () => {
         let spy = sandbox.spy(gpio, "write");
 
-        const response = await Supertest(app.server)
-        .post("/CloseDoors")
-        .trustLocalhost()
-        .set("Authorization", `Bearer ${token}`);
+        gpio.ready.then(async () => {
+            const response = await Supertest(app.server)
+            .post("/CloseDoors")
+            .trustLocalhost()
+            .set("Authorization", `Bearer ${token}`);
 
-        sandbox.assert.callCount(spy, 4);
-        expect(response.status).to.be.equal(200);
+            sandbox.assert.callCount(spy, 4);
+            expect(response.status).to.be.equal(200);
+        });
     });
 });

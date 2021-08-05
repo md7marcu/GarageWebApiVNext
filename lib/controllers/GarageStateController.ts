@@ -29,51 +29,51 @@ export class GarageStateController {
     }
 
     public OpenRightGarageDoor(): string {
-        this.doorController.switchDoor(config.rightPin);
+        this.doorController.switchDoor(config.settings.rightPin);
 
         return "OK";
     }
 
     public OpenLeftGarageDoor(): string {
-        this.doorController.switchDoor(config.leftPin);
+        this.doorController.switchDoor(config.settings.leftPin);
 
         return "OK";
     }
 
     public CloseRightGarageDoor(): string {
-        this.doorController.switchDoor(config.rightPin);
+        this.doorController.switchDoor(config.settings.rightPin);
 
         return "OK";
     }
 
     public CloseLeftGarageDoor(): string {
-        this.doorController.switchDoor(config.leftPin);
+        this.doorController.switchDoor(config.settings.leftPin);
 
         return "OK";
     }
 
     public SwitchLeftDoor(): string {
-        this.doorController.switchDoor(config.leftPin);
+        this.doorController.switchDoor(config.settings.leftPin);
 
         return "OK";
     }
 
     public SwitchRightDoor(): string {
-        this.doorController.switchDoor(config.rightPin);
+        this.doorController.switchDoor(config.settings.rightPin);
 
         return "OK";
     }
 
     public OpenDoors(): string {
-        this.doorController.switchDoor(config.rightPin);
-        this.doorController.switchDoor(config.leftPin);
+        this.doorController.switchDoor(config.settings.rightPin);
+        this.doorController.switchDoor(config.settings.leftPin);
 
         return "OK";
     }
 
     public CloseDoors(): string {
-        this.doorController.switchDoor(config.rightPin);
-        this.doorController.switchDoor(config.leftPin);
+        this.doorController.switchDoor(config.settings.rightPin);
+        this.doorController.switchDoor(config.settings.leftPin);
 
         return "OK";
     }
@@ -81,9 +81,9 @@ export class GarageStateController {
     public garageDoorStatus(door: string): string {
         switch (door) {
             case GarageDoor.Left:
-                return this.getState(this.gpio.read(config.leftOpenPin), this.gpio.read(config.leftClosedPin));
+                return this.getState(this.gpio.read(config.settings.leftOpenPin), this.gpio.read(config.settings.leftClosedPin));
             case GarageDoor.Right:
-                return this.getState(this.gpio.read(config.rightOpenPin), this.gpio.read(config.rightClosedPin));
+                return this.getState(this.gpio.read(config.settings.rightOpenPin), this.gpio.read(config.settings.rightClosedPin));
             default:
                 return GarageDoorStatus.Unknown;
         }

@@ -15,32 +15,32 @@ export class GpioController {
         this.start();
     }
     public setupGarage(): void {
-        this.gpio.setupOutputPin(config.leftPin);
-        let value = this.gpio.read(config.leftPin);
+        this.gpio.setupOutputPin(config.settings.leftPin);
+        let value = this.gpio.read(config.settings.leftPin);
         debug(`Left garage door: ${value}`);
 
-        this.gpio.setupOutputPin(config.rightPin);
-        value = this.gpio.read(config.rightPin);
+        this.gpio.setupOutputPin(config.settings.rightPin);
+        value = this.gpio.read(config.settings.rightPin);
         debug(`Right garage door: ${value}`);
     }
 
     public setupLeftGarageSensors(): void {
-        this.gpio.setupInput(config.leftOpenPin);
-        this.gpio.setPullDown(config.leftOpenPin);
-        this.gpio.setupInput(config.leftClosedPin);
-        this.gpio.setPullDown(config.leftClosedPin);
-        let open = this.gpio.read(config.leftOpenPin);
-        let closed = this.gpio.read(config.leftClosedPin);
+        this.gpio.setupInput(config.settings.leftOpenPin);
+        this.gpio.setPullDown(config.settings.leftOpenPin);
+        this.gpio.setupInput(config.settings.leftClosedPin);
+        this.gpio.setPullDown(config.settings.leftClosedPin);
+        let open = this.gpio.read(config.settings.leftOpenPin);
+        let closed = this.gpio.read(config.settings.leftClosedPin);
         debug(`Left open/closed: ${open}/${closed}`);
     }
 
     public setupRightGarageSensors(): void {
-        this.gpio.setupInput(config.rightOpenPin);
-        this.gpio.setPullDown(config.rightOpenPin);
-        this.gpio.setupInput(config.rightClosedPin);
-        this.gpio.setPullDown(config.rightClosedPin);
-        let open = this.gpio.read(config.rightOpenPin);
-        let closed = this.gpio.read(config.rightClosedPin);
+        this.gpio.setupInput(config.settings.rightOpenPin);
+        this.gpio.setPullDown(config.settings.rightOpenPin);
+        this.gpio.setupInput(config.settings.rightClosedPin);
+        this.gpio.setPullDown(config.settings.rightClosedPin);
+        let open = this.gpio.read(config.settings.rightOpenPin);
+        let closed = this.gpio.read(config.settings.rightClosedPin);
         debug(`Right open/closed: ${open}/${closed}`);
     }
 
@@ -49,60 +49,60 @@ export class GpioController {
         this.setupRightGarageSensors();
         this.setupGarage();
 
-        this.gpio.setRisingInterrupt(config.leftOpenPin, (delta) => {
+        this.gpio.setRisingInterrupt(config.settings.leftOpenPin, (delta) => {
                 // Triggered when it comes back high again
                 this.bus.notifyGarageOpened(GarageDoor.Left);
                 // Push notification
-                this.notify(`Pin ${config.leftOpenPin} changed to HIGH ${delta}`);
+                this.notify(`Pin ${config.settings.leftOpenPin} changed to HIGH ${delta}`);
         });
 
-        this.gpio.setFallingInterrupt(config.leftOpenPin, (delta) => {
+        this.gpio.setFallingInterrupt(config.settings.leftOpenPin, (delta) => {
             // Triggered when it comes back high again
             this.bus.notifyGarageMoving(GarageDoor.Left);
             // Push notification
-            this.notify(`Pin ${config.leftOpenPin} changed to LOW ${delta}`);
+            this.notify(`Pin ${config.settings.leftOpenPin} changed to LOW ${delta}`);
         });
 
-        this.gpio.setRisingInterrupt(config.leftClosedPin, (delta) => {
+        this.gpio.setRisingInterrupt(config.settings.leftClosedPin, (delta) => {
             // Triggered when it comes back high again
             this.bus.notifyGarageClosed(GarageDoor.Left);
             // Push notification
-            this.notify(`Pin ${config.leftClosedPin} changed to HIGH ${delta}`);
+            this.notify(`Pin ${config.settings.leftClosedPin} changed to HIGH ${delta}`);
         });
 
-        this.gpio.setFallingInterrupt(config.leftClosedPin, (delta) => {
+        this.gpio.setFallingInterrupt(config.settings.leftClosedPin, (delta) => {
             // Triggered when it comes back high again
             this.bus.notifyGarageMoving(GarageDoor.Left);
             // Push notification
-            this.notify(`Pin ${config.leftClosedPin} changed to LOW ${delta}`);
+            this.notify(`Pin ${config.settings.leftClosedPin} changed to LOW ${delta}`);
         });
         // -------- Right ------------
-        this.gpio.setRisingInterrupt(config.rightOpenPin, (delta) => {
+        this.gpio.setRisingInterrupt(config.settings.rightOpenPin, (delta) => {
             // Triggered when it comes back high again
             this.bus.notifyGarageOpened(GarageDoor.Right);
             // Push notification
-            this.notify(`Pin ${config.rightOpenPin} changed to HIGH ${delta}`);
+            this.notify(`Pin ${config.settings.rightOpenPin} changed to HIGH ${delta}`);
         });
 
-        this.gpio.setFallingInterrupt(config.rightOpenPin, (delta) => {
+        this.gpio.setFallingInterrupt(config.settings.rightOpenPin, (delta) => {
             // Triggered when it comes back high again
             this.bus.notifyGarageMoving(GarageDoor.Right);
             // Push notification
-            this.notify(`Pin ${config.rightOpenPin} changed to LOW ${delta}`);
+            this.notify(`Pin ${config.settings.rightOpenPin} changed to LOW ${delta}`);
         });
 
-        this.gpio.setRisingInterrupt(config.rightClosedPin, (delta) => {
+        this.gpio.setRisingInterrupt(config.settings.rightClosedPin, (delta) => {
             // Triggered when it comes back high again
             this.bus.notifyGarageClosed(GarageDoor.Right);
             // Push notification
-            this.notify(`Pin ${config.rightClosedPin} changed to HIGH ${delta}`);
+            this.notify(`Pin ${config.settings.rightClosedPin} changed to HIGH ${delta}`);
         });
 
-        this.gpio.setFallingInterrupt(config.rightClosedPin, (delta) => {
+        this.gpio.setFallingInterrupt(config.settings.rightClosedPin, (delta) => {
             // Triggered when it comes back high again
             this.bus.notifyGarageMoving(GarageDoor.Right);
              // Push notification
-             this.notify(`Pin ${config.rightClosedPin} changed to LOW ${delta}`);
+             this.notify(`Pin ${config.settings.rightClosedPin} changed to LOW ${delta}`);
         });
     }
     private notify(message: string): void {

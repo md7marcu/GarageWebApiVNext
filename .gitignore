@@ -293,6 +293,6 @@ default.json
 launch.json
 config/default.json
 config/cert.pem
-config/deployment*
+config/deployment/*
 config/env/*
 config/user/*

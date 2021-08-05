@@ -21,10 +21,10 @@ describe("Garage Routes", () => {
         gpio = new Gpio();
         app = new App();
         (app as any).gpio = gpio;
-        config.pinMoveDelay = 20;
+        config.settings.pinMoveDelay = 20;
         setHttpsOptions(app);
-        config.serverCert = "/config/tests/testcert.pem",
-        token = buildAndSignToken("1234", "emailjuarez@email.com", config.garageClaim, undefined, (app as any).httpsOptions.key);
+        config.settings.serverCert = "/config/tests/testcert.pem",
+        token = buildAndSignToken("1234", "emailjuarez@email.com", config.settings.garageClaim, undefined, (app as any).httpsOptions.key);
     });
 
     afterEach(() => {
@@ -32,7 +32,9 @@ describe("Garage Routes", () => {
     });
 
     it("Should return 200 on alive endpoint", async () => {
-        const response = await Supertest(app.server).get("/alive");
+        const response = await Supertest(app.server)
+        .get("/alive")
+        .trustLocalhost();
 
         expect(response.status).to.be.equal(200);
     });
@@ -41,6 +43,7 @@ describe("Garage Routes", () => {
         gpio.ready.then(async () => {
             const response = await Supertest(app.server)
                 .get("/GetGarageDoorStatuses")
+                .trustLocalhost()
                 .set("access_token", "token");
             expect(response.status).to.be.equal(401);
         });
@@ -51,6 +54,7 @@ describe("Garage Routes", () => {
 
         const response = await Supertest(app.server)
         .post("/OpenRightGarageDoor")
+        .trustLocalhost()
         .set("Authorization", `Bearer ${token}`);
 
         sandbox.assert.calledTwice(spy);
@@ -62,6 +66,7 @@ describe("Garage Routes", () => {
 
         const response = await Supertest(app.server)
         .post("/CloseRightGarageDoor")
+        .trustLocalhost()
         .set("Authorization", `Bearer ${token}`);
 
         sandbox.assert.calledTwice(spy);
@@ -73,6 +78,7 @@ describe("Garage Routes", () => {
 
         const response = await Supertest(app.server)
         .post("/OpenLeftGarageDoor")
+        .trustLocalhost()
         .set("Authorization", `Bearer ${token}`);
 
         sandbox.assert.calledTwice(spy);
@@ -84,6 +90,7 @@ describe("Garage Routes", () => {
 
         const response = await Supertest(app.server)
         .post("/CloseLeftGarageDoor")
+        .trustLocalhost()
         .set("Authorization", `Bearer ${token}`);
 
         sandbox.assert.calledTwice(spy);
@@ -95,6 +102,7 @@ describe("Garage Routes", () => {
 
         const response = await Supertest(app.server)
         .post("/SwitchLeftDoor")
+        .trustLocalhost()
         .set("Authorization", `Bearer ${token}`);
 
         sandbox.assert.calledTwice(spy);
@@ -106,6 +114,7 @@ describe("Garage Routes", () => {
 
         const response = await Supertest(app.server)
         .post("/SwitchRightDoor")
+        .trustLocalhost()
         .set("Authorization", `Bearer ${token}`);
 
         sandbox.assert.calledTwice(spy);
@@ -117,6 +126,7 @@ describe("Garage Routes", () => {
 
         const response = await Supertest(app.server)
         .post("/OpenDoors")
+        .trustLocalhost()
         .set("Authorization", `Bearer ${token}`);
 
         sandbox.assert.callCount(spy, 4);
@@ -128,6 +138,7 @@ describe("Garage Routes", () => {
 
         const response = await Supertest(app.server)
         .post("/CloseDoors")
+        .trustLocalhost()
         .set("Authorization", `Bearer ${token}`);
 
         sandbox.assert.callCount(spy, 4);

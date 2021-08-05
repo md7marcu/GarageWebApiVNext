@@ -37,12 +37,12 @@ export class DebugRoutes {
     }
 
     private userAuthorized = (req: IRequest) => {
-        return req && req.access_token && includes((req.access_token as any).claims, config.garageClaim);
+        return req && req.access_token && includes((req.access_token as any).claims, config.settings.garageClaim);
     }
 
     private retrieveAccessToken = (req: IRequest, res: Response, next: NextFunction) => {
         // get the auth servers public key
-        let serverCert = Fs.readFileSync(path.join(process.cwd(), config.serverCert)).toString();
+        let serverCert = Fs.readFileSync(path.join(process.cwd(), config.settings.serverCert)).toString();
         let publicKey = pki.publicKeyToPem(pki.certificateFromPem(serverCert).publicKey);
         let accessToken = this.getAccessToken(req);
 
@@ -104,11 +104,11 @@ export class DebugRoutes {
     private getVerifyOptions = () => {
         let verifyOptions: VerifyOptions = {};
 
-        verifyOptions.issuer = config.issuer;
-        verifyOptions.audience = config.audience;
+        verifyOptions.issuer = config.settings.issuer;
+        verifyOptions.audience = config.settings.audience;
         verifyOptions.ignoreNotBefore = true;
         verifyOptions.ignoreExpiration = true;
-        verifyOptions.algorithms = [config.algorithm];
+        verifyOptions.algorithms = [config.settings.algorithm];
 
         return verifyOptions;
     }

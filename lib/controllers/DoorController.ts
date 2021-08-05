@@ -15,7 +15,7 @@ export class DoorController {
         this.gpio.setupOutputPin(pinNumber);
         this.gpio.write(pinNumber, 1);
         debug("MoveDoor: Written 1.");
-        sleep(config.pinMoveDelay);
+        sleep(config.settings.pinMoveDelay);
         this.gpio.write(pinNumber, 0);
         debug("MoveGate: Written 0.");
     }
